@@ -15,7 +15,9 @@
             </svg>
           </button>
           <RouterLink class="flex ms-2 md:me-24" to="/">
-            <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">RudRuk</span>
+            <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Fittter
+              <sub><sub><sub>Free</sub></sub></sub>
+            </span>
           </RouterLink>
         </div>
         <div class="flex items-center">
@@ -59,9 +61,15 @@
 
 
     <div class="h-full px-2 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+      <div class='grid grid-rows-2 text-center m-2'>
+        <img class="w-12 h-12 mx-auto rounded-full" src="https://picsum.photos/200/300" alt="user photo">
+        <p class='mt-2 text-xl font-semibold'>Rudolf Rukavina</p>
+        <p class='mb-2'>Absolute Unit</p>
+      </div>
       <ul class="space-y-2 font-medium">
-        <li class="border p-1 rounded-xl shadow_one">
-          <p class="text-center p-2 text-gray-900 rounded-lg m-[2px] mb-3 shadow_two border-gray-50 dark:text-white bg-gray-200 dark:bg-gray-700 group">
+        <li class="border p-2 rounded-xl shadow_one">
+          <p
+            class="text-center p-2 text-gray-900 rounded-lg m-[2px] mb-3 shadow_two border-gray-50 dark:text-white bg-gray-200 dark:bg-gray-700 group">
             <span class="ms-3">Training programs</span>
           </p>
           <ul>
@@ -107,9 +115,10 @@
             </li>
           </ul>
         </li>
-        <li class='border p-1 rounded-xl'>
+        <br>
+        <li class="border p-2 rounded-xl shadow_one">
           <p
-            class="text-center p-2 ps-0 mb-2 text-gray-900 rounded-xl border-2 border-gray-50 dark:text-white bg-gray-200 dark:bg-gray-700 group">
+            class="text-center p-2 text-gray-900 rounded-lg m-[2px] mb-3 shadow_two border-gray-50 dark:text-white bg-gray-200 dark:bg-gray-700 group">
             <span class="ms-3">Personal records</span>
           </p>
           <ul>
@@ -170,11 +179,10 @@
 
 <style scoped>
 .shadow_one {
-box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
 
 .shadow_two {
   box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 }
-
 </style>
