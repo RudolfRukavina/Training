@@ -3,8 +3,8 @@
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center justify-start rtl:justify-end">
-          <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar"
-            type="button"
+          <button v-show="useUserStore().user" data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar"
+            aria-controls="logo-sidebar" type="button"
             class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
             <span class="sr-only">Open sidebar</span>
             <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
@@ -27,44 +27,70 @@
                 class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                 aria-expanded="false" data-dropdown-toggle="dropdown-user">
                 <span class="sr-only">Open user menu</span>
-                <img class="w-8 h-8 rounded-full" src="https://picsum.photos/200/300" alt="user photo">
+                <img class="w-8 h-8 rounded-full" v-if='useUserStore().user' :src="useUserStore().user.photoURL"
+                  alt="user photo" />
               </button>
             </div>
             <div
               class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
               id="dropdown-user">
-              <div class="px-4 py-3" role="none">
+              <div class="px-4 py-3" role="none" v-if='useUserStore().userData'>
                 <p class="text-sm text-gray-900 dark:text-white" role="none">
-                  Rudolf Rukavina
+                  {{ useUserStore().userData.username }}
                 </p>
                 <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                  rukavina.rudi@gmail.com
+                  {{ useUserStore().userData.email }}
                 </p>
               </div>
               <ul class="py-1" role="none">
                 <li>
-                  <RouterLink to="/logout"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                    role="menuitem">Sign out</RouterLink>
+                  <button v-if='useUserStore().user' @click="useUserStore().handleLogOut"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white w-full"
+                    role="menuitem">Sign out</button>
                 </li>
               </ul>
             </div>
           </div>
+
+          <button class="gsi-material-button" v-if='!useUserStore().user' @click="useUserStore().handleSignInGoogle">
+            <div class="gsi-material-button-state"></div>
+            <div class="gsi-material-button-content-wrapper">
+              <div class="gsi-material-button-icon">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block">
+                  <path fill="#EA4335"
+                    d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z">
+                  </path>
+                  <path fill="#4285F4"
+                    d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z">
+                  </path>
+                  <path fill="#FBBC05"
+                    d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z">
+                  </path>
+                  <path fill="#34A853"
+                    d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z">
+                  </path>
+                  <path fill="none" d="M0 0h48v48H0z"></path>
+                </svg>
+              </div>
+              <span class="gsi-material-button-contents">Sign in</span>
+              <span style="display: none">Sign in with Google</span>
+            </div>
+          </button>
         </div>
       </div>
     </div>
   </nav>
 
-  <aside id="logo-sidebar"
+  <aside id="logo-sidebar" v-show="useUserStore().user"
     class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
     aria-label="Sidebar">
-
-
     <div class="h-full px-2 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
-      <div class='grid grid-rows-2 text-center m-2'>
-        <img class="w-12 h-12 mx-auto rounded-full" src="https://picsum.photos/200/300" alt="user photo">
-        <p class='mt-2 text-xl font-semibold'>Rudolf Rukavina</p>
-        <p class='mb-2'>Absolute Unit</p>
+      <div class="grid grid-rows-2 text-center m-2">
+        <img class="w-12 h-12 mx-auto rounded-full" v-if='useUserStore().user' :src="useUserStore().user.photoURL"
+          alt="user photo" />
+        <p class="mt-2 text-xl font-semibold">Rudolf Rukavina</p>
+        <p class="mb-2">Absolute Unit</p>
       </div>
       <ul class="space-y-2 font-medium">
         <li class="border p-2 rounded-xl shadow_one">
@@ -73,7 +99,7 @@
             <span class="ms-3">Training programs</span>
           </p>
           <ul>
-            <li class='my-2 mx-1 shadow_one rounded-lg'>
+            <li class="my-2 mx-1 shadow_one rounded-lg">
               <div
                 class="flex items-center p-2 text-gray-900 rounded-lg bg-gray-100 dark:text-white hover:bg-blue-100 dark:hover:bg-blue-700 group">
                 <span class="flex-1 ms-3 whitespace-nowrap">Hypertrophy</span>
@@ -98,7 +124,7 @@
               </div>
             </li>
 
-            <li class='my-2 mx-1 rounded-lg shadow_one'>
+            <li class="my-2 mx-1 rounded-lg shadow_one">
               <div
                 class="flex items-center p-2 text-gray-900 rounded-lg bg-gray-100 dark:text-white hover:bg-blue-100 dark:hover:bg-blue-700 group">
                 <span class="flex-1 ms-3 whitespace-nowrap">Powerbuilding</span>
@@ -107,7 +133,7 @@
             <li>
               <RouterLink to="/create"
                 class="flex items-center px-2 mt-3 shadow_one m-[4px] text-gray-900 rounded-lg bg-gray-200 dark:text-white hover:bg-gray-300 dark:hover:bg-blue-700 group">
-                <span class='text-xl m-1'>+</span>
+                <span class="text-xl m-1">+</span>
                 <span class="flex-1 ms-3 whitespace-nowrap">Add your own</span>
                 <span
                   class="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-300 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span>
@@ -115,7 +141,7 @@
             </li>
           </ul>
         </li>
-        <br>
+        <br />
         <li class="border p-2 rounded-xl shadow_one">
           <p
             class="text-center p-2 text-gray-900 rounded-lg m-[2px] mb-3 shadow_two border-gray-50 dark:text-white bg-gray-200 dark:bg-gray-700 group">
@@ -175,14 +201,125 @@
 
 <script setup>
   import { RouterLink } from "vue-router";
+  import { useUserStore } from "../stores/user";
 </script>
 
 <style>
 .shadow_one {
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
 
 .shadow_two {
-  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px,
+    rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
+    rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+}
+
+.gsi-material-button {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-appearance: none;
+  background-color: WHITE;
+  background-image: none;
+  border: 1px solid #747775;
+  -webkit-border-radius: 20px;
+  border-radius: 20px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #1f1f1f;
+  cursor: pointer;
+  font-family: "Roboto", arial, sans-serif;
+  font-size: 14px;
+  height: 40px;
+  letter-spacing: 0.25px;
+  outline: none;
+  overflow: hidden;
+  padding: 0 12px;
+  position: relative;
+  text-align: center;
+  -webkit-transition: background-color 0.218s, border-color 0.218s,
+    box-shadow 0.218s;
+  transition: background-color 0.218s, border-color 0.218s, box-shadow 0.218s;
+  vertical-align: middle;
+  white-space: nowrap;
+  width: auto;
+  max-width: 400px;
+  min-width: min-content;
+}
+
+.gsi-material-button .gsi-material-button-icon {
+  height: 20px;
+  margin-right: 12px;
+  min-width: 20px;
+  width: 20px;
+}
+
+.gsi-material-button .gsi-material-button-content-wrapper {
+  -webkit-align-items: center;
+  align-items: center;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  height: 100%;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+}
+
+.gsi-material-button .gsi-material-button-contents {
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
+  font-family: "Roboto", arial, sans-serif;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: top;
+}
+
+.gsi-material-button .gsi-material-button-state {
+  -webkit-transition: opacity 0.218s;
+  transition: opacity 0.218s;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.gsi-material-button:disabled {
+  cursor: default;
+  background-color: #ffffff61;
+  border-color: #1f1f1f1f;
+}
+
+.gsi-material-button:disabled .gsi-material-button-contents {
+  opacity: 38%;
+}
+
+.gsi-material-button:disabled .gsi-material-button-icon {
+  opacity: 38%;
+}
+
+.gsi-material-button:not(:disabled):active .gsi-material-button-state,
+.gsi-material-button:not(:disabled):focus .gsi-material-button-state {
+  background-color: #303030;
+  opacity: 12%;
+}
+
+.gsi-material-button:not(:disabled):hover {
+  -webkit-box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3),
+    0 1px 3px 1px rgba(60, 64, 67, 0.15);
+  box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3),
+    0 1px 3px 1px rgba(60, 64, 67, 0.15);
+}
+
+.gsi-material-button:not(:disabled):hover .gsi-material-button-state {
+  background-color: #303030;
+  opacity: 8%;
 }
 </style>
